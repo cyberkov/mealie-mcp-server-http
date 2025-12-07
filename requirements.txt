@@ -1,0 +1,16 @@
+# FastMCP framework with HTTP support
+fastmcp>=2.13.0
+
+# HTTP client for Mealie API
+httpx>=0.27.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Web framework (included with fastmcp but explicit for clarity)
+starlette>=0.37.0
+uvicorn[standard]>=0.30.0
+
+# Logging and utilities
+pydantic>=2.0.0
+

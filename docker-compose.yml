@@ -1,0 +1,42 @@
+version: '3.8'
+
+# Use this compose file if you already have Mealie running elsewhere
+# docker-compose -f docker-compose.yml up -d
+
+services:
+  mealie-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mealie-mcp-server
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8000}:8000"
+    environment:
+      # Mealie API Configuration
+      # Set these to point to your existing Mealie instance
+      MEALIE_BASE_URL: ${MEALIE_BASE_URL:?MEALIE_BASE_URL is required}
+      MEALIE_API_KEY: ${MEALIE_API_KEY:?MEALIE_API_KEY is required}
+
+      # HTTP Server Configuration
+      HTTP_HOST: ${HTTP_HOST:-0.0.0.0}
+      HTTP_PORT: 8000
+
+      # Logging Configuration
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+      # FastMCP Global Settings (optional)
+      FASTMCP_LOG_LEVEL: ${FASTMCP_LOG_LEVEL:-INFO}
+      FASTMCP_MASK_ERROR_DETAILS: ${FASTMCP_MASK_ERROR_DETAILS:-False}
+      FASTMCP_STRICT_INPUT_VALIDATION: ${FASTMCP_STRICT_INPUT_VALIDATION:-False}
+      FASTMCP_INCLUDE_FASTMCP_META: ${FASTMCP_INCLUDE_FASTMCP_META:-True}
+    volumes:
+      # Mount logs directory for persistent logs
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health', timeout=5.0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
