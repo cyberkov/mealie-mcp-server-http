@@ -21,7 +21,22 @@ This project enables AI assistants to interact with your [Mealie](https://github
 
 ## Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Docker with Pre-built Image (Easiest)
+
+Use the pre-built Docker image from GitHub Container Registry:
+
+```bash
+docker run -d \
+  --name mealie-mcp-server \
+  -p 8000:8000 \
+  -e MEALIE_BASE_URL=http://your-mealie-instance:9000 \
+  -e MEALIE_API_KEY=your-api-key \
+  ghcr.io/cyberkov/mealie-mcp-server-http:latest
+```
+
+The server will be available at `http://localhost:8000`
+
+### Option 2: Docker Compose (Recommended for Local Development)
 
 1. Clone the repository:
 ```bash
@@ -50,7 +65,7 @@ docker-compose up -d
 
 The server will be available at `http://localhost:8000`
 
-### Option 2: Local Development
+### Option 3: Local Development
 
 1. Clone the repository:
 ```bash
@@ -142,14 +157,44 @@ Connect to the MCP endpoint at: `http://localhost:8000/mcp/v1/`
 - `create_mealplan_bulk` - Add multiple recipes to a meal plan
 - `get_todays_mealplan` - View today's planned meals
 
-## Docker Commands
+## Docker
 
-### Build Image
+### Published Images
+
+Pre-built multi-platform Docker images are automatically published to GitHub Container Registry (GHCR):
+
+- **Latest (main branch)**: `ghcr.io/cyberkov/mealie-mcp-server-http:latest`
+- **Specific version**: `ghcr.io/cyberkov/mealie-mcp-server-http:v1.0.0`
+- **Specific commit**: `ghcr.io/cyberkov/mealie-mcp-server-http:sha-<commit-sha>`
+
+Supported platforms:
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/aarch64)
+
+### Pull Pre-built Image
+
+```bash
+docker pull ghcr.io/cyberkov/mealie-mcp-server-http:latest
+```
+
+### Docker Commands
+
+### Build Image Locally (Optional)
 ```bash
 docker build -t mealie-mcp-server .
 ```
 
-### Run Container
+### Run Container with Pre-built Image
+```bash
+docker run -d \
+  --name mealie-mcp-server \
+  -p 8000:8000 \
+  -e MEALIE_BASE_URL=http://your-mealie:9000 \
+  -e MEALIE_API_KEY=your-api-key \
+  ghcr.io/cyberkov/mealie-mcp-server-http:latest
+```
+
+### Run Container with Local Build
 ```bash
 docker run -d \
   --name mealie-mcp-server \
