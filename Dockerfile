@@ -36,7 +36,7 @@ ENV PYTHONUNBUFFERED=1 \
 COPY --from=builder /opt/venv /opt/venv
 
 # Copy application code
-COPY src/ ./src/
+COPY src/ ./
 
 # Create log directory
 RUN mkdir -p /app/logs
@@ -51,5 +51,4 @@ EXPOSE 8000
 
 
 # Run the server
-CMD ["python", "-m", "src.server"]
-
+CMD ["python", "-m", "server"]
